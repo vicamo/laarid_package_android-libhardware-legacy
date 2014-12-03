@@ -42,7 +42,7 @@ int qemu_start_tracing()
     int fd = open(SYS_QEMU_TRACE_STATE, O_WRONLY);
     if (fd < 0)
         return fd;
-    write(fd, "1\n", 2);
+    TEMP_FAILURE_RETRY(write(fd, "1\n", 2));
     close(fd);
     return 0;
 }
@@ -52,7 +52,7 @@ int qemu_stop_tracing()
     int fd = open(SYS_QEMU_TRACE_STATE, O_WRONLY);
     if (fd < 0)
         return fd;
-    write(fd, "0\n", 2);
+    TEMP_FAILURE_RETRY(write(fd, "0\n", 2));
     close(fd);
     return 0;
 }
@@ -67,7 +67,7 @@ int qemu_add_mapping(unsigned int addr, const char *name)
     if (fd < 0)
         return fd;
     sprintf(buf, "%x %s\n", addr, name);
-    write(fd, buf, strlen(buf));
+    TEMP_FAILURE_RETRY(write(fd, buf, strlen(buf)));
     close(fd);
     return 0;
 }
@@ -80,7 +80,7 @@ int qemu_remove_mapping(unsigned int addr)
     if (fd < 0)
         return fd;
     sprintf(buf, "%x\n", addr);
-    write(fd, buf, strlen(buf));
+    TEMP_FAILURE_RETRY(write(fd, buf, strlen(buf)));
     close(fd);
     return 0;
 }
